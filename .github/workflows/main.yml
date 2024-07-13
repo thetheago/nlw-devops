@@ -28,3 +28,9 @@ jobs:
 
     - name: Build docker image
       run: docker build -t theagodev/nlw-devops:${{ steps.generate_sha.outputs.sha }} .
+
+    - name: Push Image
+      run: |
+        docker push theagodev/nlw-devops:${{ steps.generate_sha.outputs.sha }}
+        docker tag theagodev/nlw-devops:${{ steps.generate_sha.outputs.sha }} theagodev/nlw-devops:latest
+        docker push theagodev/nlw-devops:latest
