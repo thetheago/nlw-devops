@@ -26,11 +26,12 @@ jobs:
         SHA=$(echo $GITHUB_SHA | head -c7)
         echo "sha=$SHA" >> $GITHUB_OUTPUT
 
-    - name: Build docker image
-      run: docker build -t theagodev/nlw-devops:${{ steps.generate_sha.outputs.sha }} .
 
-    - name: Push Image
-      run: |
-        docker push theagodev/nlw-devops:${{ steps.generate_sha.outputs.sha }}
-        docker tag theagodev/nlw-devops:${{ steps.generate_sha.outputs.sha }} theagodev/nlw-devops:latest
-        docker push theagodev/nlw-devops:latest
+    - name: Build and push
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: true
+        tags: |
+          theagodev/nlw-devops:${{ steps.generate_sha.outputs.sha }}
+          theagodev/nlw-devops:latest
